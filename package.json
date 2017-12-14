@@ -1,6 +1,6 @@
 {
-    "name": "@webts/micro-webservice",
-    "version": "0.0.1",
+    "name": "micro-webservice",
+    "version": "0.0.4",
     "description": "Micro service based on express with plugins support",
     "main": "dist/index.js",
     "author": "Minh T.",
@@ -10,15 +10,11 @@
         "async-mqtt": "^1.0.1",
         "babel-polyfill": "^6.26.0",
         "body-parser": "^1.18.2",
-        "commander": "^2.11.0",
         "cors": "^2.8.4",
         "cpy": "^6.0.0",
-        "docker-compose": "^0.4.3",
-        "docker-composer": "^2.0.1",
         "dot": "^1.1.2",
         "express": "^4.16.2",
         "express-winston": "^2.4.0",
-        "glob": "^7.1.2",
         "globby": "^7.1.1",
         "helmet": "^3.9.0",
         "immutable": "^3.8.2",
@@ -26,7 +22,6 @@
         "mongodb": "^2.2.33",
         "morgan": "^1.9.0",
         "mqtt": "^2.14.0",
-        "mz": "^2.7.0",
         "passport": "^0.4.0",
         "passport-http-bearer": "^1.0.1",
         "redbird": "^0.7.0",
@@ -52,8 +47,5 @@
         "transpile": "babel ./lib -d ./dist --copy-files",
         "build": "yarn clean && yarn transpile",
         "test": "echo no tests defined"
-    },
-    "bin": {
-        "service_cli": "dist/cli.js"
     }
 }
