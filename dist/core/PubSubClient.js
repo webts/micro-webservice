@@ -31,7 +31,7 @@ let PubSubClient = class PubSubClient {
         /**
          * @private
          */
-        this.log = (0, _logger2.default)();
+        this.log = _logger2.default.bind({ options: this.options.logging })('pubsub');
 
         /**
          * @private

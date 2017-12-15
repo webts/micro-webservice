@@ -72,7 +72,7 @@ let WebService = class WebService {
 
         this.pubsub = new _PubSubClient2.default(this.options.messageBus);
         this.authenticator = new _Authenticator2.default(this);
-        this.logger = (0, _logger2.default)('express', this.name);
+        this.logger = _logger2.default.bind({ options: this.options.logging })(this.name, 'express');
 
         let srcs = [];
         if ('deps' in this.options) {
@@ -124,8 +124,9 @@ let WebService = class WebService {
                                         let vals = params.map(p => {
                                             return req.param(p);
                                         });
+                                        const domain = req.hostname.split('.').length > 1 ? req.hostname.split('.')[0] : '';
                                         try {
-                                            const fnVal = await fn.apply({ app: base, user: req.user, next: next }, vals);
+                                            const fnVal = await fn.apply({ app: base, user: req.user, domain: domain, next: next }, vals);
 
                                             //TODO: currently support only json render
                                             res.json(fnVal);

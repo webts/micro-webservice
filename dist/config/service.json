@@ -1,7 +1,0 @@
-{
-  "service": {
-    "port":8080,
-    "npm": [],
-    "serviceClass": "micro-webservice.WebService"
-  }
-}

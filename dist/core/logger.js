@@ -5,10 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = getLogger;
 
-var _Defaults = require('../config/Defaults');
-
-var _Defaults2 = _interopRequireDefault(_Defaults);
-
 var _winston = require('winston');
 
 var _winston2 = _interopRequireDefault(_winston);
@@ -16,10 +12,6 @@ var _winston2 = _interopRequireDefault(_winston);
 var _expressWinston = require('express-winston');
 
 var _expressWinston2 = _interopRequireDefault(_expressWinston);
-
-var _winstonLogrotate = require('winston-logrotate');
-
-var _winstonLogrotate2 = _interopRequireDefault(_winstonLogrotate);
 
 var _winston_tcp = require('winston_tcp');
 
@@ -29,6 +21,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const { label, combine, timestamp, prettyPrint } = _winston.format;
 //import winston_mongodb from 'winston-mongodb';
+//import logrotate from 'winston-logrotate';
 
 
 /**
@@ -37,11 +30,11 @@ const { label, combine, timestamp, prettyPrint } = _winston.format;
  * @param name
  * @return {DerivedLogger}
  */
-function getLogger(type, name) {
+function getLogger(name, type) {
     type = type || '';
     name = name || '';
 
-    const defaults = require('../config/Defaults');
+    const config = this.options; //require('../config/Defaults')();
     let transports = [new _winston2.default.transports.Rotate({
         file: './logs/err.log',
         size: '50m',
@@ -60,10 +53,10 @@ function getLogger(type, name) {
         level: 'info'
     })];
 
-    if ('logService' in defaults) {
+    if ('logService' in config) {
         transports.push(new _winston_tcp2.default({
-            host: defaults.logService.host,
-            port: defaults.logService.port || 1337,
+            host: config.logService.host,
+            port: config.logService.port || 1337,
             json: false,
             timestamp: true
         }));

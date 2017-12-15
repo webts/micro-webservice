@@ -13,10 +13,6 @@ var _logger = require('./logger');
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _Defaults = require('../config/Defaults');
-
-var _Defaults2 = _interopRequireDefault(_Defaults);
-
 var _PubSubClient = require('./PubSubClient');
 
 var _PubSubClient2 = _interopRequireDefault(_PubSubClient);
@@ -24,11 +20,12 @@ var _PubSubClient2 = _interopRequireDefault(_PubSubClient);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 let ServiceProxy = class ServiceProxy {
-    constructor() {
-        this.options = _Defaults2.default.proxyService;
-        this.pubsub = new _PubSubClient2.default(_Defaults2.default.messageBus);
+    constructor(opts) {
+        this.options = opts;
+        this.name = "proxy";
+        this.pubsub = new _PubSubClient2.default(opts.messageBus);
         this.server = new _redbird2.default(opts);
-        this.log = (0, _logger2.default)('', 'ServiceProxy');
+        this.log = _logger2.default.bind({ options: opts.logging })('ServiceProxy');
         this.pubsub.onConnect(this.init);
     }
 
