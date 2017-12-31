@@ -1,15 +1,13 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-exports.default = undefined;
+exports.default = void 0;
 
-var _mongodb = require('mongodb');
+var _mongodb = _interopRequireDefault(require("mongodb"));
 
-var _mongodb2 = _interopRequireDefault(_mongodb);
-
-var _events = require('events');
+var _events = require("events");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -17,70 +15,75 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * DB abstraction layer with partial transaction support for
  * mongodb
  */
-let DbClient = class DbClient extends _events.EventEmitter {
-    constructor(opts, transactionOpts) {
-        super();
-        this.options = opts;
-        this.transactionOptions = transactionOpts || {};
-        this.client = null;
+class DbClient extends _events.EventEmitter {
+  constructor(opts, transactionOpts) {
+    super();
+    this.options = opts;
+    this.transactionOptions = transactionOpts || {};
+    this.client = null;
+  }
+  /**
+   * return connection string
+   * @return {string}
+   */
+
+
+  getConnectionUri() {
+    let url = `mongodb://${this.options.username}:${this.options.password}@${this.options.host}:${this.options.port || 27301}/${this.dbName}`;
+
+    if (this.options.authSource) {
+      url += `?authSource=${this.options.authSource}`;
     }
 
-    /**
-     * return connection string
-     * @return {string}
-     */
-    getConnectionUri() {
-        let url = `mongodb://${this.options.username}:${this.options.password}@${this.options.host}:${this.options.port || 27301}/${this.dbName}`;
-        if (this.options.authSource) {
-            url += `?authSource=${this.options.authSource}`;
-        }
+    return url;
+  }
 
-        return url;
+  async find(query) {
+    if (this.client) {
+      return await this.client.find(query);
     }
 
-    async find(query) {
-        if (this.client) {
-            return await this.client.find(query);
-        }
+    return null;
+  }
 
-        return null;
+  async getById(id) {
+    if (this.client) {
+      return await this.client.find({
+        id
+      });
     }
 
-    async getById(id) {
-        if (this.client) {
-            return await this.client.find({ id });
-        }
+    return null;
+  }
 
-        return null;
-    }
+  database(dbName) {
+    this.dbName = dbName;
+    return this;
+  }
+  /**
+   * begin a transaction
+   * this will open a connection to db
+   * @return {Promise.<DbClient>}
+   */
 
-    database(dbName) {
-        this.dbName = dbName;
 
-        return this;
-    }
+  async begin() {
+    this.client = await _mongodb.default.MongoClient.connect(this.getConnectionUri());
+    this.emit("DbClient:Open", "Open connection " + this.getConnectionUri());
+    return this;
+  }
+  /**
+   *
+   * @param client {mongo.MongoClient}
+   * @return {Promise.<void>}
+   */
 
-    /**
-     * begin a transaction
-     * this will open a connection to db
-     * @return {Promise.<DbClient>}
-     */
-    async begin() {
-        this.client = await _mongodb2.default.MongoClient.connect(this.getConnectionUri());
-        this.emit("DbClient:Open", "Open connection " + this.getConnectionUri());
 
-        return this;
-    }
+  async end() {
+    await this.client.close();
+    this.emit("DbClient:Close", "Closed connection " + this.getConnectionUri());
+  }
 
-    /**
-     *
-     * @param client {mongo.MongoClient}
-     * @return {Promise.<void>}
-     */
-    async end() {
-        await this.client.close();
+}
 
-        this.emit("DbClient:Close", "Closed connection " + this.getConnectionUri());
-    }
-};
 exports.default = DbClient;
