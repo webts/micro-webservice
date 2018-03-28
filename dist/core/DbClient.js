@@ -87,3 +87,4 @@ class DbClient extends _events.EventEmitter {
 }
 
 exports.default = DbClient;
+//# sourceMappingURL=DbClient.js.map

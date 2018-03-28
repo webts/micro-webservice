@@ -19,7 +19,7 @@ class Authenticator {
 
   init() {
     const self = this;
-    this.passport = _passport.default.Passport.use(new _passportHttpBearer.default.Strategy(function (token, done) {
+    this.passport = _passport.default.use(new _passportHttpBearer.default.Strategy(function (token, done) {
       self.app.tokenUtil('get', {
         'authenticationToken': token
       }).then(tokenInfo => {
@@ -68,3 +68,4 @@ class Authenticator {
 }
 
 exports.default = Authenticator;
+//# sourceMappingURL=Authenticator.js.map

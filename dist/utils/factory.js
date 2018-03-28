@@ -2,6 +2,8 @@
 
 var _path = _interopRequireDefault(require("path"));
 
+var _debug = _interopRequireDefault(require("debug"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -10,6 +12,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param {any} path 
  */
 module.exports.buildService = async function (config) {
+  console.log(config);
   let serviceClass = config.serviceClass;
   let clazz = null;
 
@@ -21,17 +24,23 @@ module.exports.buildService = async function (config) {
     } else if (serviceClass.indexOf('.') > 0) {
       const parts = serviceClass.split('.');
 
-      const npm = require(parts[0]);
+      if (parts[0] === 'micro-webservice') //this package
+        {
+          console.log(__dirname + '/../core/' + parts[1]);
+          clazz = require('../core/' + parts[1]).default; //console.log('class ' + clazz);
+        } else {
+        const npm = require(parts[0]);
 
-      if (parts.length > 1) {
-        clazz = npm;
+        if (parts.length > 1) {
+          clazz = npm;
 
-        for (let i = 1; i < parts.length; i++) {
-          clazz = clazz[parts[i]];
+          for (let i = 1; i < parts.length; i++) {
+            clazz = clazz[parts[i]];
+          }
+        } else {
+          console.error(new Error('Invalid class signature'));
+          return null;
         }
-      } else {
-        console.error(new Error('Invalid class signature'));
-        return null;
       }
     } else {
       clazz = require(serviceClass);
@@ -45,3 +54,4 @@ module.exports.buildService = async function (config) {
 
   return null;
 };
+//# sourceMappingURL=factory.js.map

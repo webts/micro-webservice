@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _util = _interopRequireDefault(require("util"));
+
 var _express = _interopRequireDefault(require("express"));
 
 var _cors = _interopRequireDefault(require("cors"));
@@ -57,7 +59,7 @@ class WebService {
     this.authenticator = new _Authenticator.default(this);
     this.logger = _logger.default.bind({
       options: this.options.logging
-    })(this.name, 'express');
+    })(this.name);
     let srcs = [];
 
     if ('deps' in this.options) {
@@ -76,7 +78,7 @@ class WebService {
       }
     }
 
-    this.register(srcs).then(() => this.logger.log({
+    this.register(srcs).then(() => this.log({
       level: 'info',
       message: 'Plugins registered'
     }));
@@ -134,7 +136,7 @@ class WebService {
 
                       res.json(fnVal);
                     } catch (err) {
-                      this.logger.log({
+                      this.log({
                         level: 'error',
                         message: err.message
                       });
@@ -155,7 +157,7 @@ class WebService {
         });
       }
     } catch (err) {
-      this.logger.log({
+      this.log({
         level: 'error',
         message: err.message
       });
@@ -163,7 +165,7 @@ class WebService {
   }
 
   start() {
-    this.logger.log({
+    this.log({
       level: 'info',
       message: `service ${this.name} listening at port ${this.port}`
     });
@@ -183,7 +185,7 @@ class WebService {
   stop() {
     if (this.status === 'running') {
       //clean up
-      this.logger.log({
+      this.log({
         level: 'info',
         message: `service ${this.name} listening at port ${this.port}`
       });
@@ -196,8 +198,11 @@ class WebService {
   }
 
   defaults() {
-    this.server.json();
+    this.server.use(_express.default.json());
     this.server.use((0, _cors.default)());
+    this.server.use(_logger.default.bind({
+      options: this.options.logging
+    })(this.name, 'express'));
   }
   /**
    * this will be overwrite by Authenticator
@@ -221,6 +226,18 @@ class WebService {
     }
   }
 
+  log(obj) {
+    let level = 'info';
+    if (_util.default.isObject(obj) && 'level' in obj) level = obj.level;
+    let msg = '';
+    if (_util.default.isObject(obj) && 'message' in obj) msg = obj.message;else msg = obj;
+
+    if (level in this.logger) {
+      this.logger[level](msg);
+    }
+  }
+
 }
 
 exports.default = WebService;
+//# sourceMappingURL=WebService.js.map

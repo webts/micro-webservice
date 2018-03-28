@@ -1,6 +1,6 @@
 "use strict";
 
-require("babel-polyfill");
+require("@babel/polyfill");
 
 module.exports = {
   WebService: require('./core/WebService'),
@@ -12,3 +12,4 @@ module.exports = {
   Session: require('./core/Session'),
   ServiceFactory: require('./utils/factory')
 };
+//# sourceMappingURL=index.js.map

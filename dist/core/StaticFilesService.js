@@ -29,3 +29,4 @@ class StaticFilesService extends _WebService.default {
 }
 
 exports.default = StaticFilesService;
+//# sourceMappingURL=StaticFilesService.js.map

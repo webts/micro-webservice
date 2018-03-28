@@ -50,3 +50,4 @@ class WebAppService extends _WebService.default {
 }
 
 exports.default = WebAppService;
+//# sourceMappingURL=WebAppService.js.map

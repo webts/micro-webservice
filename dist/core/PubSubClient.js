@@ -15,9 +15,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class PubSubClient {
   constructor(opts) {
+    if (!('url' in opts)) {
+      opts.url = 'mqtt://' + opts.host + (opts.port ? opts.port : '');
+    }
     /**
      * @private
      */
+
+
     this.options = opts;
     /**
      * @private
@@ -37,7 +42,7 @@ class PubSubClient {
      * @class {MqttClient}
      */
 
-    this.client = _asyncMqtt.default.connect(opts.pubsub.url, opts.pubsub.options);
+    this.client = _asyncMqtt.default.connect(opts.url, opts.options);
   }
 
   async send(topic, payload) {
@@ -101,3 +106,4 @@ class PubSubClient {
 }
 
 exports.default = PubSubClient;
+//# sourceMappingURL=PubSubClient.js.map
