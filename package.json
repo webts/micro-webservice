@@ -1,6 +1,6 @@
 {
-    "name": "micro-webservice",
-    "version": "0.0.11",
+    "name": "mwservice",
+    "version": "0.0.13",
     "description": "Micro service based on express with plugins support",
     "main": "dist/index.js",
     "author": "Minh T.",
@@ -43,7 +43,7 @@
     },
     "scripts": {
         "clean": "rimraf dist/**",
-        "transpile": "babel ./lib -d ./dist --copy-files",
+        "transpile": "babel ./lib -d ./dist --copy-files --source-maps",
         "build": "yarn clean && yarn transpile",
         "test": "echo no tests defined",
         "prepublish": "npm build",
