@@ -58,11 +58,6 @@ function getLogger(name, type) {
   }, {
     level: 'error',
     stream: process.stderr
-  }, {
-    type: 'rotating-file',
-    path: './logs/' + name + '.log',
-    period: '1d',
-    count: 10
   }];
 
   let logger = _bunyan.default.createLogger({

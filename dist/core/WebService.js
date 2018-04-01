@@ -214,16 +214,7 @@ class WebService {
   }
 
   tokenUtil(opKind, data) {
-    switch (opKind) {
-      case 'get':
-        break;
-
-      case 'save':
-        break;
-
-      case 'delete':
-        break;
-    }
+    Promise.reject(new Error('tokenUtil is not implemented'));
   }
 
   log(obj) {

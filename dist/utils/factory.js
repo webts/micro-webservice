@@ -6,13 +6,15 @@ var _debug = _interopRequireDefault(require("debug"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const pkg = require('../../package.json');
 /**
  * create service from serveless yaml config file
  * 
  * @param {any} path 
  */
+
+
 module.exports.buildService = async function (config) {
-  console.log(config);
   let serviceClass = config.serviceClass;
   let clazz = null;
 
@@ -24,7 +26,7 @@ module.exports.buildService = async function (config) {
     } else if (serviceClass.indexOf('.') > 0) {
       const parts = serviceClass.split('.');
 
-      if (parts[0] === 'micro-webservice') //this package
+      if (parts[0] === pkg.name) //this package
         {
           console.log(__dirname + '/../core/' + parts[1]);
           clazz = require('../core/' + parts[1]).default; //console.log('class ' + clazz);
