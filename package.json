@@ -1,6 +1,6 @@
 {
     "name": "mwservice",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Micro service based on express with plugins support",
     "main": "dist/index.js",
     "author": "Minh T.",
@@ -11,6 +11,7 @@
         "async-mqtt": "^1.0.1",
         "body-parser": "^1.18.2",
         "bunyan": "^1.8.12",
+        "bunyan-format": "^0.2.1",
         "bunyan-middleware": "^0.8.0",
         "cors": "^2.8.4",
         "cpy": "^6.0.0",

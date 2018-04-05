@@ -9,6 +9,8 @@ var _bunyan = _interopRequireDefault(require("bunyan"));
 
 var _bunyanMiddleware = _interopRequireDefault(require("bunyan-middleware"));
 
+var _bunyanFormat = _interopRequireDefault(require("bunyan-format"));
+
 var _debug = require("debug");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -54,7 +56,9 @@ function getLogger(name, type) {
 
   const transports = [{
     level: 'info',
-    stream: process.stdout
+    stream: (0, _bunyanFormat.default)({
+      outputMode: 'short'
+    })
   }, {
     level: 'error',
     stream: process.stderr

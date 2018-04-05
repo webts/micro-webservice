@@ -13,8 +13,6 @@ var _cors = _interopRequireDefault(require("cors"));
 
 var _globby = _interopRequireDefault(require("globby"));
 
-var _debug = require("debug");
-
 var _logger = _interopRequireDefault(require("./logger"));
 
 var _Session = _interopRequireDefault(require("./Session"));
@@ -90,7 +88,7 @@ class WebService {
 
   async register(filePattern) {
     const base = this;
-    (0, _debug.log)('cwd ' + this.cwd);
+    this.log('cwd ' + this.cwd);
     let patterns = [filePattern];
     if (Array.isArray(filePattern)) patterns = filePattern;
 
@@ -103,7 +101,7 @@ class WebService {
 
       if (plugins && plugins.length > 0) {
         plugins.forEach(file => {
-          (0, _debug.log)('service registers ' + file);
+          this.log('service registers ' + file);
 
           let fn = require(file);
 
