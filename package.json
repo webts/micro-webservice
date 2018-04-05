@@ -1,6 +1,6 @@
 {
     "name": "mwservice",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Micro service based on express with plugins support",
     "main": "dist/index.js",
     "author": "Minh T.",
@@ -24,6 +24,7 @@
         "passport-http-bearer": "^1.0.1",
         "redis": "^2.8.0",
         "redis-sessions": "^1.3.0",
+        "util-promisifyall": "^1.0.3",
         "winston-logrotate": "^1.3.0"
     },
     "devDependencies": {

@@ -9,7 +9,7 @@ var _bunyan = _interopRequireDefault(require("bunyan"));
 
 var _bunyanMiddleware = _interopRequireDefault(require("bunyan-middleware"));
 
-var _debug = _interopRequireDefault(require("debug"));
+var _debug = require("debug");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -66,7 +66,7 @@ function getLogger(name, type) {
   });
 
   if (type === 'express') {
-    (0, _debug.default)('create express-logger for ' + name);
+    (0, _debug.log)('create express-logger for ' + name);
     return (0, _bunyanMiddleware.default)({
       headerName: 'X-Request-Id',
       propertyName: 'reqId',

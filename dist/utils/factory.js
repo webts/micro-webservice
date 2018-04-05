@@ -2,7 +2,7 @@
 
 var _path = _interopRequireDefault(require("path"));
 
-var _debug = _interopRequireDefault(require("debug"));
+var _debug = require("debug");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

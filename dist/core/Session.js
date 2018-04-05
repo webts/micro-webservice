@@ -7,13 +7,24 @@ exports.default = void 0;
 
 var _redisSessions = _interopRequireDefault(require("redis-sessions"));
 
+var _redis = _interopRequireDefault(require("redis"));
+
 var _util = require("util");
 
+var _utilPromisifyall = _interopRequireDefault(require("util-promisifyall"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(0, _utilPromisifyall.default)(_redis.default.RedisClient.prototype);
+(0, _utilPromisifyall.default)(_redis.default.Multi.prototype);
 
 class Session {
   constructor(opts) {
     this.options = opts;
+    this.redisClient = _redis.default.createClient({
+      host: opts.host,
+      port: opts.port || 6379
+    });
     this.client = new _redisSessions.default({
       host: opts.host,
       port: opts.port || 6379,

@@ -21,7 +21,7 @@ class Authenticator {
     const self = this;
     this.passport = _passport.default.use(new _passportHttpBearer.default.Strategy(function (token, done) {
       self.app.tokenUtil('get', {
-        'authenticationToken': token
+        'authToken': token
       }).then(tokenInfo => {
         if (!tokenInfo) {
           let user = {
