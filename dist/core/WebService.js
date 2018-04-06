@@ -117,7 +117,7 @@ class WebService {
 
                 if ('nowrap' in attrs) {
                   if ('method' in attrs) {
-                    const method = attrs.method;
+                    const method = attrs.method.toLowerCase();
                     this.router[method](uri, this.authen(), fn.bind({
                       app: base
                     }));
