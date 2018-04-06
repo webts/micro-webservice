@@ -43,6 +43,11 @@ class PubSubClient {
      */
 
     this.client = _asyncMqtt.default.connect(opts.url, opts.options);
+    this.send = this.send.bind(this);
+    this.subscribe = this.subscribe.bind(this);
+    this.destroy = this.destroy.bind(this);
+    this.onConnect = this.onConnect.bind(this);
+    this.onMessage = this.onMessage.bind(this);
   }
 
   async send(topic, payload) {

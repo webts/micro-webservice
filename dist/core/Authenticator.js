@@ -15,6 +15,7 @@ class Authenticator {
   constructor(app) {
     this.app = app;
     this.init();
+    this.authenticate = this.authenticate.bind(this);
   }
 
   init() {

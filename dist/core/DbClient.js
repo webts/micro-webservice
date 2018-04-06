@@ -21,6 +21,9 @@ class DbClient extends _events.EventEmitter {
     this.options = opts;
     this.transactionOptions = transactionOpts || {};
     this.client = null;
+    this.database = this.database.bind(this);
+    this.begin = this.begin.bind(this);
+    this.end = this.end.bind(this);
   }
   /**
    * return connection string
@@ -58,7 +61,6 @@ class DbClient extends _events.EventEmitter {
 
   database(dbName) {
     this.dbName = dbName;
-    return this;
   }
   /**
    * begin a transaction
@@ -70,7 +72,6 @@ class DbClient extends _events.EventEmitter {
   async begin() {
     this.client = await _mongodb.default.MongoClient.connect(this.getConnectionUri());
     this.emit("DbClient:Open", "Open connection " + this.getConnectionUri());
-    return this;
   }
   /**
    *
