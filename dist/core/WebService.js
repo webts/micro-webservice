@@ -13,6 +13,8 @@ var _cors = _interopRequireDefault(require("cors"));
 
 var _globby = _interopRequireDefault(require("globby"));
 
+var _path = _interopRequireDefault(require("path"));
+
 var _logger = _interopRequireDefault(require("./logger"));
 
 var _Session = _interopRequireDefault(require("./Session"));
@@ -91,11 +93,11 @@ class WebService {
     this.log('cwd ' + this.cwd);
     let patterns = [filePattern];
     if (Array.isArray(filePattern)) patterns = filePattern;
+    patterns = patterns.map(file => _path.default.resolve(this.cwd, file));
 
     try {
       const plugins = await (0, _globby.default)(patterns, {
         realpath: true,
-        cwd: this.cwd,
         expandDirectories: true
       });
 
@@ -110,7 +112,8 @@ class WebService {
               const attrs = fn.attributes;
 
               if ('uri' in attrs) {
-                const uri = this.name + '/' + attrs.uri;
+                let uri = '';
+                if (attrs.uri.startsWith('/')) uri = attrs.uri;else uri = `/api/${this.name}/${attrs.uri}`;
 
                 if ('nowrap' in attrs) {
                   if ('method' in attrs) {
