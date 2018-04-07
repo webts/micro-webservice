@@ -24,7 +24,7 @@ class Authenticator {
       self.app.tokenUtil('get', {
         'authToken': token
       }).then(tokenInfo => {
-        if (!tokenInfo) {
+        if (typeof tokenInfo !== 'undefined' && tokenInfo != null) {
           let user = {
             id: tokenInfo.hasOwnProperty('user_id') ? tokenInfo.user_id : null
           };

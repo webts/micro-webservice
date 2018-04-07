@@ -9,8 +9,6 @@ var _redisSessions = _interopRequireDefault(require("redis-sessions"));
 
 var _redis = _interopRequireDefault(require("redis"));
 
-var _util = require("util");
-
 var _utilPromisifyall = _interopRequireDefault(require("util-promisifyall"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -31,15 +29,27 @@ class Session {
       namespace: 'ses'
     });
     this.defaultTTL = opts.ttl || 7200;
+    this.create = this.create.bind(this);
+    this.createFromReq = this.createFromReq.bind(this);
+    this.get = this.get.bind(this);
+    this.getFromReq = this.getFromReq.bind(this);
+    this.save = this.save.bind(this);
+    this.close = this.close.bind(this);
   }
 
-  async create(domain, user_id, ip, data) {
-    return (0, _util.promisify)(this.client.create)({
-      app: domain,
-      id: user_id,
-      ip: ip,
-      ttl: this.defaultTTL,
-      d: data
+  create(domain, user_id, ip, data) {
+    return new Promise((resolve, reject) => {
+      this.client.create({
+        app: domain,
+        id: user_id,
+        ip: ip,
+        ttl: this.defaultTTL,
+        d: data
+      }, function (err, resp) {
+        if (err) reject(err);else {
+          resolve(resp);
+        }
+      });
     });
   }
 
@@ -51,8 +61,17 @@ class Session {
     });
   }
 
-  async get(domain, token) {
-    return await (0, _util.promisify)(this.client.get)(domain, token);
+  get(domain, token) {
+    return new Promise((resolve, reject) => {
+      this.client.get({
+        app: domain,
+        token
+      }, function (err, resp) {
+        if (err) reject(err);else {
+          resolve(resp);
+        }
+      });
+    });
   }
 
   async getFromReq(req) {
@@ -78,12 +97,22 @@ class Session {
   }
 
   async save(domain, token, data) {
-    const save = (0, _util.promisify)(this.client.set);
-    return await save({
-      app: domain,
-      token: token,
-      d: data
+    return new Promise((resolve, reject) => {
+      this.client.set({
+        app: domain,
+        token: token,
+        d: data
+      }, function (err, resp) {
+        if (err) reject(err);else {
+          resolve(resp);
+        }
+      });
     });
+  }
+
+  async close() {
+    this.redisClient.quit();
+    this.client.quit();
   }
 
 }
