@@ -20,7 +20,8 @@ class DbClient extends _events.EventEmitter {
     super();
     this.options = opts;
     this.transactionOptions = transactionOpts || {};
-    this.client = null;
+    this.db = null;
+    this.connector = null;
     this.database = this.database.bind(this);
     this.begin = this.begin.bind(this);
     this.end = this.end.bind(this);
@@ -32,31 +33,13 @@ class DbClient extends _events.EventEmitter {
 
 
   getConnectionUri() {
-    let url = `mongodb://${this.options.username}:${this.options.password}@${this.options.host}:${this.options.port || 27301}/${this.dbName}`;
+    let url = `mongodb://${this.options.username}:${this.options.password}@${this.options.host}:${this.options.port || 27301}/`;
 
-    if (this.options.authSource) {
+    if ('authSource' in this.options && this.options.authSource !== '') {
       url += `?authSource=${this.options.authSource}`;
     }
 
     return url;
-  }
-
-  async find(query) {
-    if (this.client) {
-      return await this.client.find(query);
-    }
-
-    return null;
-  }
-
-  async getById(id) {
-    if (this.client) {
-      return await this.client.find({
-        id
-      });
-    }
-
-    return null;
   }
 
   database(dbName) {
@@ -70,19 +53,28 @@ class DbClient extends _events.EventEmitter {
 
 
   async begin() {
-    this.client = await _mongodb.default.MongoClient.connect(this.getConnectionUri());
+    this.connector = await _mongodb.default.MongoClient.connect(this.getConnectionUri());
+    this.db = this.connector.db(this.dbName);
     this.emit("DbClient:Open", "Open connection " + this.getConnectionUri());
   }
   /**
-   *
+   * close the connection
    * @param client {mongo.MongoClient}
    * @return {Promise.<void>}
    */
 
 
   async end() {
-    await this.client.close();
-    this.emit("DbClient:Close", "Closed connection " + this.getConnectionUri());
+    if (this.connector != null) {
+      await this.connector.close();
+      this.emit("DbClient:Close", "Closed connection " + this.getConnectionUri());
+      this.connector = null;
+      this.db = null;
+    }
+  }
+
+  get client() {
+    return this.db;
   }
 
 }

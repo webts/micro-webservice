@@ -6,7 +6,7 @@ var inst = new WebService(
         { type: 'mongodb',
           host: 'localhost',
           port: '27017',
-          username: 'sytm8',
+          username: 'systm8',
           password: 'w38T52007',
           logging: { sentry: [Object] } },
        session: { host: 'localhost', port: 6379, logging: { sentry: { host: 'localhost' } } },
