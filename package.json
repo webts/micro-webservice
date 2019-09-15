@@ -1,6 +1,6 @@
 {
     "name": "mwservice",
-    "version": "0.1.8",
+    "version": "0.2.7",
     "description": "Micro service based on express with plugins support",
     "main": "dist/index.js",
     "author": "Minh T.",
